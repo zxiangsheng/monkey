@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbj.mapper.MonkeyMapper">
+    <!--手动指明映射关系-->
+<resultMap id="monkey" type="com.xbj.domain.Monkey">
+    <id property="monkeyId" column="monkey_id"></id>
+    <result property="monkeyName" column="monkey_name"></result>
+</resultMap>
+
+    <insert id="insertMonkey" parameterType="com.xbj.domain.Monkey">
+      insert into monkey values(null,#{monkeyName},#{password},#{gender},#{hobbies},#{address})
+    </insert>
+
+    <delete id="deleteMonkey">
+      delete from monkey where monkey_id = #{value}
+    </delete>
+
+    <update id="modifyMonkey">
+    update monkey set monkey_name = #{monkeyName},
+    password = #{password},
+    gender =#{gender},
+    hobbies =#{hobbies},
+    address =#{address} where monkey_id = #{monkeyId}
+    </update>
+
+    <select id="findById" resultType="int" resultMap="monkey">
+      select * from monkey where monkey_id = #{monkeyId}
+    </select>
+
+    <select id="listAll" parameterType="com.xbj.domain.Monkey" resultMap="monkey">
+    select * from monkey where
+    monkey_name like "%${monkeyName}%"
+    and address like "%${address}%"
+    </select>
+
+    <select id="checkName" parameterType="java.lang.String" resultType="int" >
+        select count(*) from monkey
+        where monkey_name = #{monkeyName}
+    </select>
+
+    <select id="loginCkeck"  resultMap="monkey">
+        SELECT * from monkey
+        where monkey_name = #{name}
+        and password = #{password}
+    </select>
+
+</mapper>
